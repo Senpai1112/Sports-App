@@ -1,19 +1,21 @@
 //
-//  FirstViewController.swift
+//  DetailsViewController.swift
 //  Sports App
 //
-//  Created by Yasser Yasser on 26/01/2025.
+//  Created by Yasser Yasser on 27/01/2025.
 //
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class DetailsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
     }
     
+
     /*
     // MARK: - Navigation
 
