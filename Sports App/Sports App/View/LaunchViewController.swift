@@ -24,10 +24,21 @@ class LaunchViewController : UIViewController {
         animationView.animationSpeed = 1.0
         view.addSubview(animationView)
         animationView.play(){_ in
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let firstViewController = storyBoard.instantiateViewController(withIdentifier: "FirstViewController") as! FirstViewController?
-            UIApplication.shared.windows.first?.rootViewController = firstViewController
-            UIApplication.shared.windows.first?.makeKeyAndVisible()
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+            // Instantiate the Tab Bar Controller from the storyboard
+            if let tabBarController = storyboard.instantiateViewController(withIdentifier: "TabBarController") as? UITabBarController {
+                // Wrap the Tab Bar Controller in a Navigation Controller
+                let navigationController = UINavigationController(rootViewController: tabBarController)
+
+                // Access the window using the connectedScenes
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let window = windowScene.windows.first {
+                    // Set the Navigation Controller as the root view controller
+                    window.rootViewController = navigationController
+                    window.makeKeyAndVisible()
+                }
+            }
         }
     }
 
