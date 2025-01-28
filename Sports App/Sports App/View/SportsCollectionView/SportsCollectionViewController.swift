@@ -75,7 +75,14 @@ class SportsCollectionViewController: UICollectionViewController , UICollectionV
     }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyBoard.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
+        let vc = storyBoard.instantiateViewController(withIdentifier: "LeaguesTableViewController") as! LeaguesTableViewController
+        switch indexPath.row{
+            // football leagues
+        case 0:
+            vc.url = "https://apiv2.allsportsapi.com/football/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+        default:
+            break
+        }
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
