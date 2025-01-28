@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-class LeaguesTableViewController: UITableViewController ,LeaguesProtocol {
+class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
 
     var url : String?
     var leagues : [Leagues]?
@@ -18,11 +18,20 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol {
         let presenter = Presenter()
         presenter.attach(view: self)
         presenter.fetchData(LeaguesUrl: url)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
     func renderToTableView(leaguesData : [Leagues]){
         leagues = leaguesData
@@ -50,10 +59,24 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = leagues?[indexPath.row].league_name
-        let url = URL(string: leagues![indexPath.row].league_logo!)
-        cell.imageView?.kf.setImage(with: url, placeholder: UIImage(named: "footBall"), options: nil, progressBlock: nil, completionHandler: nil)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LeaguesCustomTableViewCell
+        cell.leagueTitle.text = leagues?[indexPath.row].league_name
+        if let leagueLogo = leagues?[indexPath.row].league_logo,
+           let imageURL = URL(string: leagueLogo) {
+            cell.leagueImage.kf.setImage(
+                with: imageURL,
+                placeholder: UIImage(named: "lol")
+            )
+        } else {
+            // Set placeholder directly if the URL or league_logo is nil
+            cell.leagueImage.image = UIImage(named: "lol")
+        }
+        cell.backgroundColor = .gray
+        cell.layer.borderColor = UIColor.black.cgColor
+        cell.layer.borderWidth = 5
+        cell.clipsToBounds = true
+
+        //cell.backgroundView = UIImageView(image: UIImage(named: "backGround"))
         return cell
     }
 
