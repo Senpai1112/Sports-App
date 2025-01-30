@@ -11,6 +11,7 @@ import Kingfisher
 class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
 
     var url : String?
+    var sport : String?
     var leagues : [Leagues]?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,13 +72,33 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
             // Set placeholder directly if the URL or league_logo is nil
             cell.leagueImage.image = UIImage(named: "lol")
         }
-        cell.backgroundColor = .gray
-        cell.layer.borderColor = UIColor.black.cgColor
+        cell.backgroundColor = .lightGray
+        cell.layer.borderColor = UIColor.systemBackground.cgColor
         cell.layer.borderWidth = 5
         cell.clipsToBounds = true
 
         //cell.backgroundView = UIImageView(image: UIImage(named: "backGround"))
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "FixtureCollectionViewController") as! FixtureCollectionViewController
+        
+        switch sport
+        {
+        case "footBall":
+            vc.league_key = leagues?[indexPath.row].league_key
+            vc.url = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46%20&from=2021-05-18&to=2021-05-18"
+            print(sport!)
+        case "basketBall":
+            print(sport!)
+        case "cricket":
+            print(sport!)
+        default:
+            print(sport!)
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     /*

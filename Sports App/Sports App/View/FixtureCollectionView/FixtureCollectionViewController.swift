@@ -1,16 +1,17 @@
 //
-//  SportsCollectionViewController.swift
+//  FixtureCollectionViewController.swift
 //  Sports App
 //
-//  Created by Yasser Yasser on 27/01/2025.
+//  Created by Yasser Yasser on 29/01/2025.
 //
 
 import UIKit
 
 //private let reuseIdentifier = "Cell"
 
-class SportsCollectionViewController: UICollectionViewController , UICollectionViewDelegateFlowLayout {
-
+class FixtureCollectionViewController: UICollectionViewController {
+    var league_key : Int?
+    var url : String?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,13 +22,8 @@ class SportsCollectionViewController: UICollectionViewController , UICollectionV
         //self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
-        
+        print(league_key!)
     }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
-    {
-        return CGSize(width: UIScreen.main.bounds.size.width/2 - 10, height: UIScreen.main.bounds.size.height/2 - 10)
-    }
-
 
     /*
     // MARK: - Navigation
@@ -43,56 +39,21 @@ class SportsCollectionViewController: UICollectionViewController , UICollectionV
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 0
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 4
+        return 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
-        switch indexPath.row{
-        case 0:
-            cell.sportImage.image = UIImage(named: "footBall")
-            cell.sportName.text = "Football"
-        case 1:
-            cell.sportImage.image = UIImage(named: "basketBall")
-            cell.sportName.text = "BasketBall"
-        case 2:
-            cell.sportImage.image = UIImage(named: "cricket")
-            cell.sportName.text = "Cricket"
-        default:
-            cell.sportImage.image = UIImage(named: "tennis")
-            cell.sportName.text = "Tennis"
-        }
-        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+    
         // Configure the cell
     
         return cell
-    }
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyBoard.instantiateViewController(withIdentifier: "LeaguesTableViewController") as! LeaguesTableViewController
-        switch indexPath.row{
-            // football leagues
-        case 0:
-            vc.sport = "footBall"
-            vc.url = "https://apiv2.allsportsapi.com/football/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
-        case 1:
-            vc.sport = "basketBall"
-            vc.url = "https://apiv2.allsportsapi.com/basketball/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
-        case 2:
-            vc.sport = "cricket"
-            vc.url = "https://apiv2.allsportsapi.com/cricket/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
-        default:
-            vc.sport = "tennis"
-            vc.url = "https://apiv2.allsportsapi.com/tennis/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
-        }
-        self.navigationController?.pushViewController(vc, animated: true)
-        
     }
 
     // MARK: UICollectionViewDelegate
@@ -104,10 +65,12 @@ class SportsCollectionViewController: UICollectionViewController , UICollectionV
     }
     */
 
+    /*
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         return true
     }
+    */
 
     /*
     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
