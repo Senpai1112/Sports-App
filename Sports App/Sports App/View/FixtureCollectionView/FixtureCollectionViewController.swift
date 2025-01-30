@@ -12,13 +12,16 @@ import UIKit
 class FixtureCollectionViewController: UICollectionViewController , FixtureProtocol {
         
     var fixtures : [Fixtures]?
-    var league_key : Int?
+    var upComingEvents : [Fixtures]?
     var url : String?
+    var upComing : String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.backgroundColor = .black
         
         let presenter = Presenter()
         presenter.attachToFixturesView(view: self)
+        presenter.fetchFixturesUpComingEventsData(FixturesUrl: upComing)
         presenter.fetchFixturesData(FixturesUrl: url)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -30,13 +33,28 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         let layout = UICollectionViewCompositionalLayout{index,environment in
             switch(index)
             {
+            case 0:
+                return self.drawTopSection()
             default:
                 return self.drawMiddleSection()
             }
         }
         collectionView.setCollectionViewLayout(layout, animated: true)
-        print(league_key!)
     }
+    
+    func drawTopSection() -> NSCollectionLayoutSection
+    {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.3))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        return section
+    }
+    
     func drawMiddleSection() -> NSCollectionLayoutSection
     {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
@@ -50,12 +68,18 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         return section
     }
     
+    func renderUpComingEventsToCollectionView(fixturesData: [Fixtures]) {
+        upComingEvents = fixturesData
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
     func renderToCollectionView(fixturesData: [Fixtures]) {
         fixtures = fixturesData
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
-
     }
 
     /*
@@ -72,55 +96,91 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        if ((fixtures?.count) != nil){
-            return 1
-        }
-        else
-        {
-            return 0
-        }
+        return 2
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return fixtures?.count ?? 0
+        switch section{
+        case 0:
+            return upComingEvents?.count ?? 0
+        default:
+            return fixtures?.count ?? 0
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! FixtureCollectionViewCell
-        
-        if let away_team_logo = fixtures?[indexPath.row].away_team_logo,
-           let imageURL = URL(string: away_team_logo) {
-            cell.awayTeamImage.kf.setImage(
-                with: imageURL,
-                placeholder: UIImage(named: "lol")
-            )
-        } else {
-            // Set placeholder directly if the URL or league_logo is nil
-            cell.awayTeamImage.image = UIImage(named: "lol")
+        switch indexPath.section{
+        case 0:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TopFixtureCollectionViewCell", for: indexPath) as! TopFixtureCollectionViewCell
+            if let away_team_logo = upComingEvents?[indexPath.row].away_team_logo,
+               let imageURL = URL(string: away_team_logo) {
+                cell.awayTeamImage.kf.setImage(
+                    with: imageURL,
+                    placeholder: UIImage(named: "lol")
+                )
+            } else {
+                // Set placeholder directly if the URL or league_logo is nil
+                cell.awayTeamImage.image = UIImage(named: "lol")
+            }
+            
+            if let home_team_logo = upComingEvents?[indexPath.row].home_team_logo,
+               let imageURL = URL(string: home_team_logo) {
+                cell.homeTeamImage.kf.setImage(
+                    with: imageURL,
+                    placeholder: UIImage(named: "lol")
+                )
+            } else {
+                // Set placeholder directly if the URL or league_logo is nil
+                cell.homeTeamImage.image = UIImage(named: "lol")
+            }
+            
+            cell.awayTeamName.text = upComingEvents?[indexPath.row].event_away_team
+            cell.homeTeamName.text = upComingEvents?[indexPath.row].event_home_team
+            cell.date.text = upComingEvents?[indexPath.row].event_date
+            
+            cell.backgroundView = UIImageView(image: UIImage(named: "backGround1"))
+            // Configure the cell
+            cell.layer.borderWidth = 10
+            cell.layer.cornerRadius = 30
+            return cell
+        default:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MiddleFixtureCollectionViewCell", for: indexPath) as! MiddleFixtureCollectionViewCell
+            
+            if let away_team_logo = fixtures?[indexPath.row].away_team_logo,
+               let imageURL = URL(string: away_team_logo) {
+                cell.awayTeamImage.kf.setImage(
+                    with: imageURL,
+                    placeholder: UIImage(named: "lol")
+                )
+            } else {
+                // Set placeholder directly if the URL or league_logo is nil
+                cell.awayTeamImage.image = UIImage(named: "lol")
+            }
+            
+            if let home_team_logo = fixtures?[indexPath.row].home_team_logo,
+               let imageURL = URL(string: home_team_logo) {
+                cell.homeTeamImage.kf.setImage(
+                    with: imageURL,
+                    placeholder: UIImage(named: "lol")
+                )
+            } else {
+                // Set placeholder directly if the URL or league_logo is nil
+                cell.homeTeamImage.image = UIImage(named: "lol")
+            }
+            
+            cell.awayTeamName.text = fixtures?[indexPath.row].event_away_team
+            cell.homeTeamName.text = fixtures?[indexPath.row].event_home_team
+            cell.date.text = fixtures?[indexPath.row].event_date
+            cell.finalResult.text = fixtures?[indexPath.row].event_final_result
+            
+            cell.backgroundView = UIImageView(image: UIImage(named: "backGround1"))
+            // Configure the cell
+            cell.layer.borderWidth = 5
+            cell.layer.cornerRadius = 15
+            return cell
         }
-        
-        if let home_team_logo = fixtures?[indexPath.row].home_team_logo,
-           let imageURL = URL(string: home_team_logo) {
-            cell.homeTeamImage.kf.setImage(
-                with: imageURL,
-                placeholder: UIImage(named: "lol")
-            )
-        } else {
-            // Set placeholder directly if the URL or league_logo is nil
-            cell.homeTeamImage.image = UIImage(named: "lol")
-        }
-        
-        cell.awayTeamName.text = fixtures?[indexPath.row].event_away_team
-        cell.homeTeamName.text = fixtures?[indexPath.row].event_home_team
-        cell.date.text = fixtures?[indexPath.row].event_date
-        cell.finalResult.text = fixtures?[indexPath.row].event_final_result
-        
-        cell.backgroundView = UIImageView(image: UIImage(named: "backGround"))
-        // Configure the cell
-    
-        return cell
     }
 
     // MARK: UICollectionViewDelegate

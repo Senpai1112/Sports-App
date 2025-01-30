@@ -26,7 +26,25 @@ class Presenter {
     
     func fetchFixturesData(FixturesUrl url : String?){
         ApiService.fechDataFromFixturesJson(fixturesUrl: url!) { (data) in
-            self.fixturesView?.renderToCollectionView(fixturesData: data!)
+            if let data = data{
+                self.fixturesView?.renderToCollectionView(fixturesData: data)
+            }
+            else{
+                self.fixturesView?.renderToCollectionView(fixturesData: [])
+            }
+            
+        }
+    }
+    
+    func fetchFixturesUpComingEventsData(FixturesUrl url : String?){
+        ApiService.fechDataFromFixturesJson(fixturesUrl: url!) { (data) in
+            if let data = data{
+                self.fixturesView?.renderUpComingEventsToCollectionView(fixturesData: data)
+            }
+            else
+            {
+                self.fixturesView?.renderUpComingEventsToCollectionView(fixturesData: [])
+            }
         }
     }
     

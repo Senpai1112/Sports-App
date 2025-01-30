@@ -10,6 +10,10 @@ import Kingfisher
 
 class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
 
+    
+    var footBallFixtureURL : String = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2022-01-25&to=2023-01-25"
+    var footBallFixtureUpcomingMatches : String = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2025-01-25&to=2025-02-25"
+    
     var url : String?
     var sport : String?
     var leagues : [Leagues]?
@@ -20,7 +24,7 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
         presenter.attachToLeaguesView(view: self)
         presenter.fetchLeaguesData(LeaguesUrl: url)
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 100
+        tableView.estimatedRowHeight = 80
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -29,10 +33,10 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 80
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 80
     }
     func renderToTableView(leaguesData : [Leagues]){
         leagues = leaguesData
@@ -72,6 +76,7 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
             // Set placeholder directly if the URL or league_logo is nil
             cell.leagueImage.image = UIImage(named: "lol")
         }
+        cell.leagueImage.layer.cornerRadius = 25
         cell.backgroundColor = .lightGray
         cell.layer.borderColor = UIColor.systemBackground.cgColor
         cell.layer.borderWidth = 5
@@ -84,12 +89,15 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: "FixtureCollectionViewController") as! FixtureCollectionViewController
-        
+        let leagueKey : Int = (leagues?[indexPath.row].league_key)!
+        let leagueKeyNS : NSNumber = leagueKey as NSNumber
+        var strLeagueKey : String = "&leagueId="
+        strLeagueKey.append(leagueKeyNS.stringValue)
         switch sport
         {
         case "footBall":
-            vc.league_key = leagues?[indexPath.row].league_key
-            vc.url = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&leagueid=152&from=2021-05-18&to=2021-05-18"
+            vc.url = footBallFixtureURL + strLeagueKey
+            vc.upComing = footBallFixtureUpcomingMatches + strLeagueKey
             print(sport!)
         case "basketBall":
             print(sport!)
