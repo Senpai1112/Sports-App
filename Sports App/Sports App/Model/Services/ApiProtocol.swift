@@ -8,5 +8,7 @@
 import Foundation
 
 protocol ApiProtocol {
-    static func fetchDataFromJson(LeaguesUrl url : String,completionHandler: @escaping ([Leagues]?) -> Void)
+    static func fetchDataFromLeaguesJson(LeaguesUrl url : String,completionHandler: @escaping ([Leagues]?) -> Void)
+    
+    static func fechDataFromFixturesJson(fixturesUrl url : String,completionHandler: @escaping ([Fixtures]?) -> Void)
 }

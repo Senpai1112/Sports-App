@@ -7,17 +7,32 @@
 
 import Foundation
 class Presenter {
-  
-    var view : LeaguesProtocol?
+    // for leagues data
+    var leaguesView : LeaguesProtocol?
     
-    func fetchData(LeaguesUrl url : String?){
-        ApiService.fetchDataFromJson(LeaguesUrl: url!) { (data) in
-            self.view?.renderToTableView(leaguesData: data!)
+    func fetchLeaguesData(LeaguesUrl url : String?){
+        ApiService.fetchDataFromLeaguesJson(LeaguesUrl: url!) { (data) in
+            self.leaguesView?.renderToTableView(leaguesData: data!)
         }
     }
     
-    func attach(view : LeaguesProtocol)
+    func attachToLeaguesView(view : LeaguesProtocol)
     {
-        self.view = view
+        self.leaguesView = view
     }
+    
+    //for fixtures data
+    var fixturesView : FixtureProtocol?
+    
+    func fetchFixturesData(FixturesUrl url : String?){
+        ApiService.fechDataFromFixturesJson(fixturesUrl: url!) { (data) in
+            self.fixturesView?.renderToCollectionView(fixturesData: data!)
+        }
+    }
+    
+    func attachToFixturesView(view : FixtureProtocol)
+    {
+        self.fixturesView = view
+    }
+
 }

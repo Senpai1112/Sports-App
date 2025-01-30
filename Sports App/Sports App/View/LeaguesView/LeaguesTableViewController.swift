@@ -17,8 +17,8 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
         super.viewDidLoad()
         
         let presenter = Presenter()
-        presenter.attach(view: self)
-        presenter.fetchData(LeaguesUrl: url)
+        presenter.attachToLeaguesView(view: self)
+        presenter.fetchLeaguesData(LeaguesUrl: url)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
         // Uncomment the following line to preserve selection between presentations
@@ -89,7 +89,7 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
         {
         case "footBall":
             vc.league_key = leagues?[indexPath.row].league_key
-            vc.url = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46%20&from=2021-05-18&to=2021-05-18"
+            vc.url = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&leagueid=152&from=2021-05-18&to=2021-05-18"
             print(sport!)
         case "basketBall":
             print(sport!)

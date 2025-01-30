@@ -8,5 +8,10 @@
 import UIKit
 
 class FixtureCollectionViewCell: UICollectionViewCell {
-    
+    @IBOutlet weak var awayTeamImage: UIImageView!
+    @IBOutlet weak var date: UILabel!
+    @IBOutlet weak var finalResult: UILabel!
+    @IBOutlet weak var homeTeamName: UILabel!
+    @IBOutlet weak var awayTeamName: UILabel!
+    @IBOutlet weak var homeTeamImage: UIImageView!
 }
