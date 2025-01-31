@@ -65,9 +65,9 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
     {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.25))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalHeight(0.25))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
         let section = NSCollectionLayoutSection(group: group)
         //section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
@@ -84,6 +84,15 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        section.visibleItemsInvalidationHandler = { (items, offset, environment) in
+             items.forEach { item in
+             let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
+             let minScale: CGFloat = 0.8
+             let maxScale: CGFloat = 1.0
+             let scale = max(maxScale - (distanceFromCenter / environment.container.contentSize.width), minScale)
+             item.transform = CGAffineTransform(scaleX: scale, y: scale)
+             }
+        }
         return section
     }
     
@@ -233,6 +242,18 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         
     }
 
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section == 2{
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let teamsVC = storyBoard.instantiateViewController(withIdentifier: "TeamDetailsCollectionViewController") as! TeamDetailsCollectionViewController
+            let teamKey : Int = (teams?[indexPath.row].team_key)!
+            let teamKeyNS : NSNumber = teamKey as NSNumber
+            var strTeamKey : String = "&teamId="
+            strTeamKey.append(teamKeyNS.stringValue)
+            teamsVC.teamUrl = teamsUrl! + strTeamKey
+            navigationController?.pushViewController(teamsVC, animated: true)
+        }
+    }
     // MARK: UICollectionViewDelegate
 
     /*

@@ -55,7 +55,7 @@ class Presenter {
             }
             else
             {
-                self.fixturesView?.renderUpComingEventsToCollectionView(fixturesData: [])
+                self.fixturesView?.renderTeamsToCollectionView(teamsData: [])
             }
         }
     }
@@ -64,5 +64,22 @@ class Presenter {
     {
         self.fixturesView = view
     }
-
+    
+    // teams data
+    var teamsView : TeamsProtocol?
+    func attachToTeamsView(View : TeamsProtocol){
+        self.teamsView = View
+    }
+    
+    func fetchTeamData(teamUrl url : String?){
+        ApiService.fetchDataFromTeamsJson(teamsUrl: url!) { (data) in
+            if let data = data{
+                self.teamsView?.renderTeamToCollectionView(teamData: data)
+            }
+            else
+            {
+                self.teamsView?.renderTeamToCollectionView(teamData: [])
+            }
+        }
+    }
 }
