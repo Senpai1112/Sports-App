@@ -66,4 +66,33 @@ class ApiService : ApiProtocol
             task.resume()
     }
     
+    static var teamsResult : TeamsResult?
+    static func fetchDataFromTeamsJson(teamsUrl url : String , completionHandler: @escaping ([Teams]?) -> Void){
+        let url = URL(string: url)
+        guard let guardedUrl = url
+        else
+        {
+            return
+        }
+        let request = URLRequest(url:guardedUrl)
+        let session = URLSession(configuration: .default)
+        let task = session.dataTask(with: request) { (data, response, error) in
+            // closure code
+            guard let guardedData = data else
+            {
+                return
+            }
+            do {
+                teamsResult = try JSONDecoder().decode(TeamsResult.self, from: guardedData)
+                completionHandler((teamsResult?.result)!)
+            }catch
+            {
+                print(error.localizedDescription)
+                completionHandler(nil)
+            }
+        }
+        task.resume()
+
+    }
+    
 }

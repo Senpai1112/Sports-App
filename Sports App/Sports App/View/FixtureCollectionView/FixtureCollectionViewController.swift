@@ -13,16 +13,19 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         
     var fixtures : [Fixtures]?
     var upComingEvents : [Fixtures]?
+    var teams : [Teams]?
     var url : String?
-    var upComing : String?
+    var upComingEventsUrl : String?
+    var teamsUrl : String?
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .black
         
         let presenter = Presenter()
         presenter.attachToFixturesView(view: self)
-        presenter.fetchFixturesUpComingEventsData(FixturesUrl: upComing)
+        presenter.fetchFixturesUpComingEventsData(FixturesUrl: upComingEventsUrl)
         presenter.fetchFixturesData(FixturesUrl: url)
+        presenter.fetchTeamsData(teamsUrl: teamsUrl)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -30,13 +33,16 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         //self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
+        collectionView.backgroundColor = .white
         let layout = UICollectionViewCompositionalLayout{index,environment in
             switch(index)
             {
             case 0:
                 return self.drawTopSection()
-            default:
+            case 1:
                 return self.drawMiddleSection()
+            default:
+                return self.drawBottomSection()
             }
         }
         collectionView.setCollectionViewLayout(layout, animated: true)
@@ -68,6 +74,19 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         return section
     }
     
+    func drawBottomSection() -> NSCollectionLayoutSection
+    {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.3))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        return section
+    }
+    
     func renderUpComingEventsToCollectionView(fixturesData: [Fixtures]) {
         upComingEvents = fixturesData
         DispatchQueue.main.async {
@@ -77,6 +96,13 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
     
     func renderToCollectionView(fixturesData: [Fixtures]) {
         fixtures = fixturesData
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func renderTeamsToCollectionView(teamsData: [Teams]) {
+        teams = teamsData
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
@@ -96,7 +122,7 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 2
+        return 3
     }
 
 
@@ -105,8 +131,10 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         switch section{
         case 0:
             return upComingEvents?.count ?? 0
-        default:
+        case 1:
             return fixtures?.count ?? 0
+        default:
+            return teams?.count ?? 0
         }
     }
 
@@ -144,8 +172,9 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
             // Configure the cell
             cell.layer.borderWidth = 10
             cell.layer.cornerRadius = 30
+            cell.backgroundColor = .white
             return cell
-        default:
+        case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MiddleFixtureCollectionViewCell", for: indexPath) as! MiddleFixtureCollectionViewCell
             
             if let away_team_logo = fixtures?[indexPath.row].away_team_logo,
@@ -179,8 +208,29 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
             // Configure the cell
             cell.layer.borderWidth = 5
             cell.layer.cornerRadius = 15
+            cell.backgroundColor = .white
+            return cell
+        default:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BottomFixturesCollectionViewCell", for: indexPath) as! BottomFixturesCollectionViewCell
+            
+            if let teamImage = teams?[indexPath.row].team_logo,
+               let imageURL = URL(string: teamImage) {
+                cell.teamImage.kf.setImage(
+                    with: imageURL,
+                    placeholder: UIImage(named: "lol")
+                )
+            } else {
+                // Set placeholder directly if the URL or league_logo is nil
+                cell.teamImage.image = UIImage(named: "lol")
+            }
+            cell.teamName.text = teams?[indexPath.row].team_name
+            // Configure the cell
+            cell.layer.borderWidth = 5
+            cell.layer.cornerRadius = 15
+            cell.backgroundColor = .white
             return cell
         }
+        
     }
 
     // MARK: UICollectionViewDelegate

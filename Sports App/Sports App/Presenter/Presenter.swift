@@ -48,6 +48,18 @@ class Presenter {
         }
     }
     
+    func fetchTeamsData(teamsUrl url : String?){
+        ApiService.fetchDataFromTeamsJson(teamsUrl: url!) { (data) in
+            if let data = data{
+                self.fixturesView?.renderTeamsToCollectionView(teamsData: data)
+            }
+            else
+            {
+                self.fixturesView?.renderUpComingEventsToCollectionView(fixturesData: [])
+            }
+        }
+    }
+    
     func attachToFixturesView(view : FixtureProtocol)
     {
         self.fixturesView = view

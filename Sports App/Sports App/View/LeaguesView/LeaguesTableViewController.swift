@@ -10,9 +10,15 @@ import Kingfisher
 
 class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
 
-    
+    /* footBall urls */
     var footBallFixtureURL : String = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2022-01-25&to=2023-01-25"
     var footBallFixtureUpcomingMatches : String = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2025-01-25&to=2025-02-25"
+    var footBallTeams : String = "https://apiv2.allsportsapi.com/football/?&met=Teams&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+    
+    /* BasketBall urls */
+    var basketBallFixtureUrl : String = "https://apiv2.allsportsapi.com/basketball/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2022-01-25&to=2023-01-25"
+    var basketBallFixtureUpComingMatches : String = "https://apiv2.allsportsapi.com/basketball/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2025-01-25&to=2025-02-25"
+    var basketBallTeams : String = "https://allsportsapi.com/api/basketball/?&met=Teams&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
     
     var url : String?
     var sport : String?
@@ -97,9 +103,13 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
         {
         case "footBall":
             vc.url = footBallFixtureURL + strLeagueKey
-            vc.upComing = footBallFixtureUpcomingMatches + strLeagueKey
+            vc.upComingEventsUrl = footBallFixtureUpcomingMatches + strLeagueKey
+            vc.teamsUrl = footBallTeams + strLeagueKey
             print(sport!)
         case "basketBall":
+            vc.url = basketBallFixtureUrl + strLeagueKey
+            vc.upComingEventsUrl = basketBallFixtureUpComingMatches + strLeagueKey
+            vc.teamsUrl = basketBallTeams + strLeagueKey
             print(sport!)
         case "cricket":
             print(sport!)

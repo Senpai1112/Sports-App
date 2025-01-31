@@ -11,4 +11,6 @@ protocol ApiProtocol {
     static func fetchDataFromLeaguesJson(LeaguesUrl url : String,completionHandler: @escaping ([Leagues]?) -> Void)
     
     static func fechDataFromFixturesJson(fixturesUrl url : String,completionHandler: @escaping ([Fixtures]?) -> Void)
+    
+    static func fetchDataFromTeamsJson(teamsUrl url : String , completionHandler: @escaping ([Teams]?) -> Void)
 }

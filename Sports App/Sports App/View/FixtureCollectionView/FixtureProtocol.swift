@@ -10,4 +10,5 @@ import Foundation
 protocol FixtureProtocol{
     func renderToCollectionView(fixturesData : [Fixtures])
     func renderUpComingEventsToCollectionView(fixturesData : [Fixtures])
+    func renderTeamsToCollectionView(teamsData : [Teams])
 }
