@@ -59,9 +59,9 @@ class CoreDataManager : CoreDataProtocol{
         let fetchRequest = NSFetchRequest<NSManagedObject> (entityName: "LeaguesEntity")
         var leagues = [LeaguesAndUrls]()
         do{
-            let league = LeaguesAndUrls()
             let fetchedLeagues = try manager.fetch(fetchRequest)
             for item in fetchedLeagues{
+                let league = LeaguesAndUrls()
                 league.leagueTeamsUrl = item.value(forKey: "leagueTeamsUrl") as? String
                 league.leagueUpComingMatchesUrl = item.value(forKey: "leagueUpComingMatchesUrl") as? String
                 league.leagueUrl = item.value(forKey: "leagueUrl") as? String

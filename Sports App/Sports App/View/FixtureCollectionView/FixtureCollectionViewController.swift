@@ -90,6 +90,15 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        section.visibleItemsInvalidationHandler = { (items, offset, environment) in
+             items.forEach { item in
+             let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
+             let minScale: CGFloat = 0.9
+             let maxScale: CGFloat = 1.0
+             let scale = max(maxScale - (distanceFromCenter / environment.container.contentSize.width), minScale)
+             item.transform = CGAffineTransform(scaleX: scale, y: scale)
+             }
+        }
         return section
     }
     
