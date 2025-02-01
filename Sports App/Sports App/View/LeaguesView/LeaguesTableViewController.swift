@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import Reachability
 
 class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
 
@@ -49,6 +50,19 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.title = "Leagues"
+        do{
+            let reachability = try Reachability()
+            if reachability.connection == .wifi{
+                
+            }else{
+                let alert = UIAlertController(title: "Internet unreachable", message: "you have to connect to the internet to use this app", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: "Cancle", style: .destructive, handler:nil))
+                self.present(alert, animated: true)
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {

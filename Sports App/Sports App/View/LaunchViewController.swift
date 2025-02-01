@@ -7,12 +7,26 @@
 
 import UIKit
 import Lottie
+import Reachability
 
 class LaunchViewController : UIViewController {
     private var animationView : AnimationView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        do{
+            let reachability = try Reachability()
+            if reachability.connection == .wifi{
+                
+            }else{
+                let alert = UIAlertController(title: "Internet unreachable", message: "you have to connect to the internet to use this app", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: "Cancle", style: .destructive, handler:nil))
+                self.present(alert, animated: true)
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
         setupAnimationView()
     }
     func setupAnimationView(){
