@@ -20,7 +20,9 @@ class SportsCollectionViewController: UICollectionViewController , UICollectionV
         //self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
-        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.title = "Sports"
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {

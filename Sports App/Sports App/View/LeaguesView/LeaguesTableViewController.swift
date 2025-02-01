@@ -20,6 +20,16 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
     var basketBallFixtureUpComingMatches : String = "https://apiv2.allsportsapi.com/basketball/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2025-01-25&to=2025-02-25"
     var basketBallTeams : String = "https://allsportsapi.com/api/basketball/?&met=Teams&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
     
+    /* Cricket urls*/
+    var cricketFixtureUrl : String = "https://apiv2.allsportsapi.com/cricket/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2022-01-25&to=2023-01-25"
+    var cricketFixtureUpComingMatches : String = "https://apiv2.allsportsapi.com/cricket/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2025-01-25&to=2025-02-25"
+    var cricketTeams : String = "https://allsportsapi.com/api/cricket/?&met=Teams&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+    
+    /* tennis urls */
+    var tennisFixtureUrl : String = "https://apiv2.allsportsapi.com/tennis/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2022-01-25&to=2023-01-25"
+    var tennisFixtureUpComingMatches : String = "https://apiv2.allsportsapi.com/tennis/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2025-01-25&to=2025-02-25"
+    
+    
     var url : String?
     var sport : String?
     var leagues : [Leagues]?
@@ -36,6 +46,9 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationItem.title = "Leagues"
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -112,8 +125,14 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
             vc.teamsUrl = basketBallTeams + strLeagueKey
             print(sport!)
         case "cricket":
+            vc.url = cricketFixtureUrl + strLeagueKey
+            vc.upComingEventsUrl = cricketFixtureUpComingMatches + strLeagueKey
+            vc.teamsUrl = cricketTeams + strLeagueKey
             print(sport!)
         default:
+            vc.url = tennisFixtureUrl + strLeagueKey
+            vc.upComingEventsUrl = tennisFixtureUpComingMatches + strLeagueKey
+            vc.teamsUrl = ""
             print(sport!)
         }
         self.navigationController?.pushViewController(vc, animated: true)
