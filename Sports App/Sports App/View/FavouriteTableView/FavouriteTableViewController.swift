@@ -7,8 +7,18 @@
 
 import UIKit
 
-class FavouriteTableViewController: UITableViewController {
+class FavouriteTableViewController: UITableViewController ,FavouriteProtocol{
 
+    var leaguesAndUrls : [LeaguesAndUrls]?
+    let presenter = Presenter()
+
+    func renderFavouriteLeaguesToTableView(leaguesData: [LeaguesAndUrls]) {
+        leaguesAndUrls = leaguesData
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
@@ -16,8 +26,11 @@ class FavouriteTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        presenter.initFavouriteData()
+        presenter.attachToFavouriteView(View: self)
     }
     override func viewWillAppear(_ animated: Bool) {
+        presenter.fetchFavouriteData()
         self.tabBarController?.title = "Favourites"
     }
 

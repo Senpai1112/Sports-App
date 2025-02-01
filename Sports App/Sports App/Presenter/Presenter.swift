@@ -8,6 +8,7 @@
 import Foundation
 class Presenter {
     // for leagues data
+    /*/////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
     var leaguesView : LeaguesProtocol?
     
     func fetchLeaguesData(LeaguesUrl url : String?){
@@ -21,6 +22,7 @@ class Presenter {
         self.leaguesView = view
     }
     
+    /*/////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
     //for fixtures data
     var fixturesView : FixtureProtocol?
     
@@ -65,6 +67,7 @@ class Presenter {
         self.fixturesView = view
     }
     
+    /*/////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
     // teams data
     var teamsView : TeamsProtocol?
     func attachToTeamsView(View : TeamsProtocol){
@@ -81,5 +84,36 @@ class Presenter {
                 self.teamsView?.renderTeamToCollectionView(teamData: [])
             }
         }
+    }
+    
+    /*/////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+    // for core Data
+    var favouriteView : FavouriteProtocol?
+    func attachToFavouriteView(View : FavouriteProtocol){
+        self.favouriteView = View
+    }
+    func initFavouriteData(){
+        CoreDataManager.initCoreData()
+    }
+    
+    func fetchFavouriteData(){
+        CoreDataManager.fetchFromCoreData(completionHandler: {
+            data in
+            if let data = data{
+                self.favouriteView?.renderFavouriteLeaguesToTableView(leaguesData: data)
+            }else{
+                self.favouriteView?.renderFavouriteLeaguesToTableView(leaguesData: [])
+            }
+        })
+    }
+    func deleteFavouriteData(leagueId : Int){
+        CoreDataManager.deleteFromCoreData(leagueId: leagueId)
+    }
+    func insertFavouriteData(leagueData : LeaguesAndUrls){
+        CoreDataManager.insertIntoCoreData(leaguesData: leagueData)
+    }
+    
+    func searchInFavourites(leagueId : Int) -> Bool{
+        return CoreDataManager.searchInCoreDataWith(leagueId: leagueId)
     }
 }

@@ -10,22 +10,25 @@ import UIKit
 //private let reuseIdentifier = "Cell"
 
 class FixtureCollectionViewController: UICollectionViewController , FixtureProtocol {
-        
+    
+    let presenter = Presenter()
+    var rightButton : UIBarButtonItem?
     var fixtures : [Fixtures]?
     var upComingEvents : [Fixtures]?
     var teams : [Teams]?
     var url : String?
     var upComingEventsUrl : String?
     var teamsUrl : String?
+    var league : Leagues?
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .black
-        
-        let presenter = Presenter()
+        presenter.initFavouriteData()
         presenter.attachToFixturesView(view: self)
         presenter.fetchFixturesUpComingEventsData(FixturesUrl: upComingEventsUrl)
         presenter.fetchFixturesData(FixturesUrl: url)
         presenter.fetchTeamsData(teamsUrl: teamsUrl)
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -47,8 +50,34 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         }
         collectionView.setCollectionViewLayout(layout, animated: true)
     }
+    @objc func addToFavourite(){
+        if presenter.searchInFavourites(leagueId: (league?.league_key)!){
+            presenter.deleteFavouriteData(leagueId:  (league?.league_key)!)
+            rightButton = UIBarButtonItem(image: UIImage(named: "whiteHeart") ,style: .done, target: self, action: #selector(addToFavourite))
+            self.navigationItem.rightBarButtonItem = rightButton
+        }else{
+            let leagueData = LeaguesAndUrls()
+            leagueData.leagueUrl = url
+            leagueData.leagueUpComingMatchesUrl = upComingEventsUrl
+            leagueData.leagueTeamsUrl = teamsUrl
+            leagueData.league_key = league?.league_key
+            leagueData.league_logo = league?.league_logo
+            leagueData.league_name = league?.league_name
+            
+            presenter.insertFavouriteData(leagueData: leagueData)
+            rightButton = UIBarButtonItem(image: UIImage(named: "redHeart") ,style: .done, target: self, action: #selector(addToFavourite))
+            self.navigationItem.rightBarButtonItem = rightButton
+        }
+    }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.title = "League Details"
+        if presenter.searchInFavourites(leagueId: (league?.league_key)!){
+            rightButton = UIBarButtonItem(image: UIImage(named: "redHeart") ,style: .done, target: self, action: #selector(addToFavourite))
+            self.navigationItem.rightBarButtonItem = rightButton
+        }else{
+            rightButton = UIBarButtonItem(image: UIImage(named: "whiteHeart") ,style: .done, target: self, action: #selector(addToFavourite))
+            self.navigationItem.rightBarButtonItem = rightButton
+        }
     }
     
     func drawTopSection() -> NSCollectionLayoutSection

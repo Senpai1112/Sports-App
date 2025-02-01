@@ -109,6 +109,7 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: "FixtureCollectionViewController") as! FixtureCollectionViewController
         let leagueKey : Int = (leagues?[indexPath.row].league_key)!
+        vc.league = leagues?[indexPath.row]
         let leagueKeyNS : NSNumber = leagueKey as NSNumber
         var strLeagueKey : String = "&leagueId="
         strLeagueKey.append(leagueKeyNS.stringValue)
