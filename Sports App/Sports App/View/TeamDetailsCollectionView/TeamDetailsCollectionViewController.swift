@@ -36,19 +36,7 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.title = "Team Details"
-        do{
-            let reachability = try Reachability()
-            if reachability.connection == .wifi{
-                
-            }else{
-                let alert = UIAlertController(title: "Internet unreachable", message: "you have to connect to the internet to use this app", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                alert.addAction(UIAlertAction(title: "Cancle", style: .destructive, handler:nil))
-                self.present(alert, animated: true)
-            }
-        }catch{
-            print(error.localizedDescription)
-        }
+        
         //collectionView.backgroundView = UIImageView(image: UIImage(named: "darkBackGround"))
     }
 

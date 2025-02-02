@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Reachability
 
 class FavouriteTableViewController: UITableViewController ,FavouriteProtocol{
 
@@ -78,6 +79,8 @@ class FavouriteTableViewController: UITableViewController ,FavouriteProtocol{
         cell.leagueImage.layer.cornerRadius = 25
         cell.backgroundColor = .systemGray5
         cell.layer.borderColor = UIColor.systemBackground.cgColor
+        cell.layer.borderWidth = 5
+        cell.clipsToBounds = true
         //cell.layer.borderWidth = 5
         //cell.clipsToBounds = true
 
@@ -107,17 +110,29 @@ class FavouriteTableViewController: UITableViewController ,FavouriteProtocol{
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyBoard.instantiateViewController(withIdentifier: "FixtureCollectionViewController") as! FixtureCollectionViewController
-        let leagueKey : Int = (leaguesAndUrls?[indexPath.row].league_key)!
-        vc.league = leaguesAndUrls?[indexPath.row]
-        let leagueKeyNS : NSNumber = leagueKey as NSNumber
-        var strLeagueKey : String = "&leagueId="
-        strLeagueKey.append(leagueKeyNS.stringValue)
-        vc.url = (leaguesAndUrls?[indexPath.row].leagueUrl)! + strLeagueKey
-        vc.upComingEventsUrl = (leaguesAndUrls?[indexPath.row].leagueUpComingMatchesUrl)! + strLeagueKey
-        vc.teamsUrl = (leaguesAndUrls?[indexPath.row].leagueTeamsUrl)! + strLeagueKey
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+        do{
+            let reachability = try Reachability()
+            if reachability.connection == .wifi || reachability.connection == .cellular{
+                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyBoard.instantiateViewController(withIdentifier: "FixtureCollectionViewController") as! FixtureCollectionViewController
+                let leagueKey : Int = (leaguesAndUrls?[indexPath.row].league_key)!
+                vc.league = leaguesAndUrls?[indexPath.row]
+                let leagueKeyNS : NSNumber = leagueKey as NSNumber
+                var strLeagueKey : String = "&leagueId="
+                strLeagueKey.append(leagueKeyNS.stringValue)
+                vc.url = (leaguesAndUrls?[indexPath.row].leagueUrl)! + strLeagueKey
+                vc.upComingEventsUrl = (leaguesAndUrls?[indexPath.row].leagueUpComingMatchesUrl)! + strLeagueKey
+                vc.teamsUrl = (leaguesAndUrls?[indexPath.row].leagueTeamsUrl)! + strLeagueKey
+                self.navigationController?.pushViewController(vc, animated: true)
+            }else{
+                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyBoard.instantiateViewController(withIdentifier: "LostConnectionViewController") as! LostConnectionViewController
+                self.navigationController?.present(vc, animated: true)
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
     }
     /*
     // Override to support rearranging the table view.

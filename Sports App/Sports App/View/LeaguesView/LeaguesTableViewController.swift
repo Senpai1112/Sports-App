@@ -50,19 +50,6 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.title = "Leagues"
-        do{
-            let reachability = try Reachability()
-            if reachability.connection == .wifi{
-                
-            }else{
-                let alert = UIAlertController(title: "Internet unreachable", message: "you have to connect to the internet to use this app", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                alert.addAction(UIAlertAction(title: "Cancle", style: .destructive, handler:nil))
-                self.present(alert, animated: true)
-            }
-        }catch{
-            print(error.localizedDescription)
-        }
         //tableView.backgroundView = UIImageView(image: UIImage(named: "darkBackGround"))
     }
     
@@ -134,22 +121,18 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
             vc.url = footBallFixtureURL + strLeagueKey
             vc.upComingEventsUrl = footBallFixtureUpcomingMatches + strLeagueKey
             vc.teamsUrl = footBallTeams + strLeagueKey
-            print(sport!)
         case "basketBall":
             vc.url = basketBallFixtureUrl + strLeagueKey
             vc.upComingEventsUrl = basketBallFixtureUpComingMatches + strLeagueKey
             vc.teamsUrl = basketBallTeams + strLeagueKey
-            print(sport!)
         case "cricket":
             vc.url = cricketFixtureUrl + strLeagueKey
             vc.upComingEventsUrl = cricketFixtureUpComingMatches + strLeagueKey
             vc.teamsUrl = cricketTeams + strLeagueKey
-            print(sport!)
         default:
             vc.url = tennisFixtureUrl + strLeagueKey
             vc.upComingEventsUrl = tennisFixtureUpComingMatches + strLeagueKey
             vc.teamsUrl = ""
-            print(sport!)
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Reachability
 
 //private let reuseIdentifier = "Cell"
 
@@ -76,25 +77,36 @@ class SportsCollectionViewController: UICollectionViewController , UICollectionV
         return cell
     }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyBoard.instantiateViewController(withIdentifier: "LeaguesTableViewController") as! LeaguesTableViewController
-        switch indexPath.row{
-            // football leagues
-        case 0:
-            vc.sport = "footBall"
-            vc.url = "https://apiv2.allsportsapi.com/football/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
-        case 1:
-            vc.sport = "basketBall"
-            vc.url = "https://apiv2.allsportsapi.com/basketball/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
-        case 2:
-            vc.sport = "cricket"
-            vc.url = "https://apiv2.allsportsapi.com/cricket/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
-        default:
-            vc.sport = "tennis"
-            vc.url = "https://apiv2.allsportsapi.com/tennis/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+        do{
+            let reachability = try Reachability()
+            if reachability.connection == .wifi || reachability.connection == .cellular{
+                
+                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyBoard.instantiateViewController(withIdentifier: "LeaguesTableViewController") as! LeaguesTableViewController
+                switch indexPath.row{
+                    // football leagues
+                case 0:
+                    vc.sport = "footBall"
+                    vc.url = "https://apiv2.allsportsapi.com/football/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+                case 1:
+                    vc.sport = "basketBall"
+                    vc.url = "https://apiv2.allsportsapi.com/basketball/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+                case 2:
+                    vc.sport = "cricket"
+                    vc.url = "https://apiv2.allsportsapi.com/cricket/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+                default:
+                    vc.sport = "tennis"
+                    vc.url = "https://apiv2.allsportsapi.com/tennis/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+                }
+                self.navigationController?.pushViewController(vc, animated: true)
+            }else{
+                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyBoard.instantiateViewController(withIdentifier: "LostConnectionViewController") as! LostConnectionViewController
+                self.navigationController?.present(vc, animated: true)
+            }
+        }catch{
+            print(error.localizedDescription)
         }
-        self.navigationController?.pushViewController(vc, animated: true)
-        
     }
 
     // MARK: UICollectionViewDelegate
