@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Reachability
 
 //private let reuseIdentifier = "Cell"
 
@@ -71,6 +72,19 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.title = "League Details"
+        do{
+            let reachability = try Reachability()
+            if reachability.connection == .wifi{
+                
+            }else{
+                let alert = UIAlertController(title: "Internet unreachable", message: "you have to connect to the internet to use this app", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: "Cancle", style: .destructive, handler:nil))
+                self.present(alert, animated: true)
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
         if presenter.searchInFavourites(leagueId: (league?.league_key)!){
             rightButton = UIBarButtonItem(image: UIImage(named: "redHeart") ,style: .done, target: self, action: #selector(addToFavourite))
             self.navigationItem.rightBarButtonItem = rightButton
@@ -78,6 +92,7 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
             rightButton = UIBarButtonItem(image: UIImage(named: "whiteHeart") ,style: .done, target: self, action: #selector(addToFavourite))
             self.navigationItem.rightBarButtonItem = rightButton
         }
+        //collectionView.backgroundView = UIImageView(image: UIImage(named: "darkBackGround"))
     }
     
     func drawTopSection() -> NSCollectionLayoutSection
@@ -99,6 +114,13 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
              item.transform = CGAffineTransform(scaleX: scale, y: scale)
              }
         }
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        section.boundarySupplementaryItems = [header]
         return section
     }
     
@@ -112,6 +134,13 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         let section = NSCollectionLayoutSection(group: group)
         //section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        section.boundarySupplementaryItems = [header]
         return section
     }
     
@@ -134,6 +163,13 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
              item.transform = CGAffineTransform(scaleX: scale, y: scale)
              }
         }
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        section.boundarySupplementaryItems = [header]
         return section
     }
     
@@ -281,6 +317,20 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
             return cell
         }
         
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "FixturesHeaderCollectionReusableView", for: indexPath) as! FixturesHeaderCollectionReusableView
+        switch indexPath.section{
+        case 0:
+            header.headerName.text = "Up Coming Matches"
+        case 1:
+            header.headerName.text = "Past Matches"
+        default:
+            header.headerName.text = "Teams"
+        }
+        
+        return header
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

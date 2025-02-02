@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Reachability
 
 //private let reuseIdentifier = "Cell"
 
@@ -20,13 +21,6 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
         let presenter = Presenter()
         presenter.attachToTeamsView(View: self)
         presenter.fetchTeamData(teamUrl: teamUrl)
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        //self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
         
         collectionView.backgroundColor = .white
         let layout = UICollectionViewCompositionalLayout{index,environment in
@@ -42,6 +36,20 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.title = "Team Details"
+        do{
+            let reachability = try Reachability()
+            if reachability.connection == .wifi{
+                
+            }else{
+                let alert = UIAlertController(title: "Internet unreachable", message: "you have to connect to the internet to use this app", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: "Cancle", style: .destructive, handler:nil))
+                self.present(alert, animated: true)
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
+        //collectionView.backgroundView = UIImageView(image: UIImage(named: "darkBackGround"))
     }
 
     
@@ -55,6 +63,14 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        section.boundarySupplementaryItems = [header]
+        
         return section
     }
 
@@ -62,17 +78,24 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
     {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.2))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalHeight(0.25))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
         let section = NSCollectionLayoutSection(group: group)
         //section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        section.boundarySupplementaryItems = [header]
         return section
     }
     func renderTeamToCollectionView(teamData: [Teams]) {
         team = teamData
-        print("data is here")
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
@@ -91,7 +114,11 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 2
+        if (team != nil){
+            return 2
+        }else{
+            return 0
+        }
     }
 
 
@@ -135,18 +162,32 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
                let imageURL = URL(string: playerImage) {
                 cell.playerImage.kf.setImage(
                     with: imageURL,
-                    placeholder: UIImage(named: "lol")
+                    placeholder: UIImage(named: "person")
                 )
             } else {
                 // Set placeholder directly if the URL or league_logo is nil
-                cell.playerImage.image = UIImage(named: "lol")
+                cell.playerImage.image = UIImage(named: "person")
             }
             cell.playerName.text = team?[0].players![indexPath.row].player_name
             cell.playerType.text = team?[0].players![indexPath.row].player_type
-            cell.layer.borderWidth = 12
-            cell.layer.cornerRadius = 25
+            //cell.layer.borderWidth = 12
+            //cell.layer.cornerRadius = 25
+            cell.layer.borderWidth = 5
+            cell.layer.cornerRadius = 15
+            cell.backgroundColor = .white
             return cell
         }
+    }
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) as! HeaderCollectionReusableView
+        switch indexPath.section{
+        case 0:
+            header.nameLabel.text = "team"
+        default:
+            header.nameLabel.text = "Players"
+        }
+        
+        return header
     }
     // MARK: UICollectionViewDelegate
 

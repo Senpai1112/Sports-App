@@ -34,6 +34,7 @@ class FavouriteTableViewController: UITableViewController ,FavouriteProtocol{
     override func viewWillAppear(_ animated: Bool) {
         presenter.fetchFavouriteData()
         self.tabBarController?.title = "Favourites"
+        //tableView.backgroundView = UIImageView(image: UIImage(named: "darkBackGround"))
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -75,10 +76,10 @@ class FavouriteTableViewController: UITableViewController ,FavouriteProtocol{
             cell.leagueImage.image = UIImage(named: "lol")
         }
         cell.leagueImage.layer.cornerRadius = 25
-        cell.backgroundColor = .lightGray
+        cell.backgroundColor = .systemGray5
         cell.layer.borderColor = UIColor.systemBackground.cgColor
-        cell.layer.borderWidth = 5
-        cell.clipsToBounds = true
+        //cell.layer.borderWidth = 5
+        //cell.clipsToBounds = true
 
         //cell.backgroundView = UIImageView(image: UIImage(named: "backGround"))
         return cell

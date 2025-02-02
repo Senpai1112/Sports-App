@@ -63,6 +63,7 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
         }catch{
             print(error.localizedDescription)
         }
+        //tableView.backgroundView = UIImageView(image: UIImage(named: "darkBackGround"))
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -110,7 +111,7 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
             cell.leagueImage.image = UIImage(named: "lol")
         }
         cell.leagueImage.layer.cornerRadius = 25
-        cell.backgroundColor = .lightGray
+        cell.backgroundColor = .systemGray5
         cell.layer.borderColor = UIColor.systemBackground.cgColor
         cell.layer.borderWidth = 5
         cell.clipsToBounds = true

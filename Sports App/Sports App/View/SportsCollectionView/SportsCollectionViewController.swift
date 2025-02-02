@@ -23,6 +23,7 @@ class SportsCollectionViewController: UICollectionViewController , UICollectionV
     }
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.title = "Sports"
+        //collectionView.backgroundView = UIImageView(image: UIImage(named: "darkBackGround"))
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
