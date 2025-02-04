@@ -53,6 +53,10 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
     }
     @objc func addToFavourite(){
         if presenter.searchInFavourites(leagueId: (league?.league_key)!){
+            let alert = UIAlertController(title: "Removed From Favourite", message: "\((league?.league_name)!) have been Removed From Favourite", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default)
+            alert.addAction(action)
+            self.present(alert, animated: true)
             presenter.deleteFavouriteData(leagueId:  (league?.league_key)!)
             rightButton = UIBarButtonItem(image: UIImage(named: "whiteHeart") ,style: .done, target: self, action: #selector(addToFavourite))
             self.navigationItem.rightBarButtonItem = rightButton
@@ -65,6 +69,10 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
             leagueData.league_logo = league?.league_logo
             leagueData.league_name = league?.league_name
             
+            let alert = UIAlertController(title: "added to Favourite", message: "\((league?.league_name)!) have been added to Favourite", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default)
+            alert.addAction(action)
+            self.present(alert, animated: true)
             presenter.insertFavouriteData(leagueData: leagueData)
             rightButton = UIBarButtonItem(image: UIImage(named: "redHeart") ,style: .done, target: self, action: #selector(addToFavourite))
             self.navigationItem.rightBarButtonItem = rightButton
