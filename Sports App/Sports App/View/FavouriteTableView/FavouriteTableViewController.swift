@@ -6,12 +6,14 @@
 //
 
 import UIKit
-import Reachability
 
-class FavouriteTableViewController: UITableViewController ,FavouriteProtocol{
+class FavouriteTableViewController: UITableViewController ,FavouriteProtocol , RechabilityCheckingProtocol {
 
     var leaguesAndUrls : [LeaguesAndUrls]?
     let presenter = Presenter()
+    var isReachable : Bool?
+    let rechabilityPresenter = ReachabilityPresenter()
+
 
     func renderFavouriteLeaguesToTableView(leaguesData: [LeaguesAndUrls]) {
         leaguesAndUrls = leaguesData
@@ -27,6 +29,7 @@ class FavouriteTableViewController: UITableViewController ,FavouriteProtocol{
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
         presenter.initFavouriteData()
         presenter.attachToFavouriteView(View: self)
         tableView.rowHeight = UITableView.automaticDimension
@@ -110,10 +113,10 @@ class FavouriteTableViewController: UITableViewController ,FavouriteProtocol{
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        do{
-            let reachability = try Reachability()
-            if reachability.connection == .wifi || reachability.connection == .cellular{
+        rechabilityPresenter.attachToView(view: self)
+        rechabilityPresenter.isWifiOrCellularRechable()
+        if let isReachable = isReachable{
+            if isReachable {
                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyBoard.instantiateViewController(withIdentifier: "FixtureCollectionViewController") as! FixtureCollectionViewController
                 let leagueKey : Int = (leaguesAndUrls?[indexPath.row].league_key)!
@@ -130,9 +133,11 @@ class FavouriteTableViewController: UITableViewController ,FavouriteProtocol{
                 let vc = storyBoard.instantiateViewController(withIdentifier: "LostConnectionViewController") as! LostConnectionViewController
                 self.navigationController?.present(vc, animated: true)
             }
-        }catch{
-            print(error.localizedDescription)
         }
+    }
+    
+    func renderReachabilityToView(isReachable :Bool){
+        self.isReachable = isReachable
     }
     /*
     // Override to support rearranging the table view.
