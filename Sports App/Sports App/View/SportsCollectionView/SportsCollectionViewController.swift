@@ -59,7 +59,7 @@ class SportsCollectionViewController: UICollectionViewController , UICollectionV
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
         switch indexPath.row{
         case 0:
-            cell.sportImage.image = UIImage(named: "footBall1")
+            cell.sportImage.image = UIImage(named: "footBall2")
             cell.sportName.text = "Football"
         case 1:
             cell.sportImage.image = UIImage(named: "basketBall")
