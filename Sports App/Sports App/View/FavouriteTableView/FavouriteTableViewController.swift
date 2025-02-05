@@ -10,7 +10,7 @@ import UIKit
 class FavouriteTableViewController: UITableViewController ,FavouriteProtocol , RechabilityCheckingProtocol {
 
     var leaguesAndUrls : [LeaguesAndUrls]?
-    let presenter = Presenter()
+    let presenter = FavouritePresenter()
     var isReachable : Bool?
     let rechabilityPresenter = ReachabilityPresenter()
 

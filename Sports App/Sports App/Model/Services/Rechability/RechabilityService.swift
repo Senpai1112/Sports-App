@@ -22,5 +22,4 @@ class RechabilityService : RechabilityProtocol{
             print(error.localizedDescription)
         }
     }
-    
 }

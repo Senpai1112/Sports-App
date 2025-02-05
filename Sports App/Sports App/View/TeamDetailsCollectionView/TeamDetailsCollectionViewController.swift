@@ -18,7 +18,7 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let presenter = Presenter()
+        let presenter = TeamsPresenter()
         presenter.attachToTeamsView(View: self)
         presenter.fetchTeamData(teamUrl: teamUrl)
         

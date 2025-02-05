@@ -12,7 +12,8 @@ import Reachability
 
 class FixtureCollectionViewController: UICollectionViewController , FixtureProtocol {
     
-    let presenter = Presenter()
+    let presenter = FixturesPresenter()
+    let facouritePresenter = FavouritePresenter()
     var rightButton : UIBarButtonItem?
     var fixtures : [Fixtures]?
     var upComingEvents : [Fixtures]?
@@ -24,7 +25,7 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .black
-        presenter.initFavouriteData()
+        facouritePresenter.initFavouriteData()
         presenter.attachToFixturesView(view: self)
         presenter.fetchFixturesUpComingEventsData(FixturesUrl: upComingEventsUrl)
         presenter.fetchFixturesData(FixturesUrl: url)
@@ -52,12 +53,12 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
         collectionView.setCollectionViewLayout(layout, animated: true)
     }
     @objc func addToFavourite(){
-        if presenter.searchInFavourites(leagueId: (league?.league_key)!){
+        if facouritePresenter.searchInFavourites(leagueId: (league?.league_key)!){
             let alert = UIAlertController(title: "Removed From Favourite", message: "\((league?.league_name)!) have been Removed From Favourite", preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .default)
             alert.addAction(action)
             self.present(alert, animated: true)
-            presenter.deleteFavouriteData(leagueId:  (league?.league_key)!)
+            facouritePresenter.deleteFavouriteData(leagueId:  (league?.league_key)!)
             rightButton = UIBarButtonItem(image: UIImage(named: "whiteHeart") ,style: .done, target: self, action: #selector(addToFavourite))
             self.navigationItem.rightBarButtonItem = rightButton
         }else{
@@ -73,14 +74,14 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
             let action = UIAlertAction(title: "Ok", style: .default)
             alert.addAction(action)
             self.present(alert, animated: true)
-            presenter.insertFavouriteData(leagueData: leagueData)
+            facouritePresenter.insertFavouriteData(leagueData: leagueData)
             rightButton = UIBarButtonItem(image: UIImage(named: "redHeart") ,style: .done, target: self, action: #selector(addToFavourite))
             self.navigationItem.rightBarButtonItem = rightButton
         }
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.title = "League Details"
-        if presenter.searchInFavourites(leagueId: (league?.league_key)!){
+        if facouritePresenter.searchInFavourites(leagueId: (league?.league_key)!){
             rightButton = UIBarButtonItem(image: UIImage(named: "redHeart") ,style: .done, target: self, action: #selector(addToFavourite))
             self.navigationItem.rightBarButtonItem = rightButton
         }else{

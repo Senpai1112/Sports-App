@@ -37,7 +37,7 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let presenter = Presenter()
+        let presenter = LeaguesPresenter()
         presenter.attachToLeaguesView(view: self)
         presenter.fetchLeaguesData(LeaguesUrl: url)
         tableView.rowHeight = UITableView.automaticDimension
