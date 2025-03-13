@@ -11,6 +11,8 @@ import Reachability
 
 class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
 
+    let activityIndicator = UIActivityIndicatorView(style: .large)
+
     /* footBall urls */
     var footBallFixtureURL : String = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1&from=2022-01-25&to=2023-01-25"
     var footBallFixtureUpcomingMatches : String = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1&from=2025-01-25&to=2025-02-25"
@@ -47,6 +49,14 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        initUI()
+    }
+    func initUI(){
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .gray
+        activityIndicator.center = self.view.center
+        activityIndicator.startAnimating()
+        view.addSubview(activityIndicator)
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.title = "Leagues"
@@ -62,6 +72,7 @@ class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
     func renderToTableView(leaguesData : [Leagues]){
         leagues = leaguesData
         DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
             self.tableView.reloadData()
         }
     }

@@ -14,6 +14,7 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
 
     var teamUrl : String?
     var team : [Teams]?
+    let activityIndicator = UIActivityIndicatorView(style: .large)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,7 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
             }
         }
         collectionView.setCollectionViewLayout(layout, animated: true)
+        initUI()
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.title = "Team Details"
@@ -40,6 +42,13 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
         //collectionView.backgroundView = UIImageView(image: UIImage(named: "darkBackGround"))
     }
 
+    func initUI(){
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .gray
+        activityIndicator.center = self.view.center
+        activityIndicator.startAnimating()
+        view.addSubview(activityIndicator)
+    }
     
     func drawTopSection() -> NSCollectionLayoutSection
     {
@@ -85,6 +94,7 @@ class TeamDetailsCollectionViewController: UICollectionViewController , TeamsPro
     func renderTeamToCollectionView(teamData: [Teams]) {
         team = teamData
         DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
             self.collectionView.reloadData()
         }
     }

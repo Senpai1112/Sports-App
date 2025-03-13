@@ -12,6 +12,7 @@ import Reachability
 
 class FixtureCollectionViewController: UICollectionViewController , FixtureProtocol {
     
+    let activityIndicator = UIActivityIndicatorView(style: .large)
     let presenter = FixturesPresenter()
     let facouritePresenter = FavouritePresenter()
     var rightButton : UIBarButtonItem?
@@ -51,6 +52,15 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
             }
         }
         collectionView.setCollectionViewLayout(layout, animated: true)
+        initUI()
+    }
+    
+    func initUI(){
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .gray
+        activityIndicator.center = self.view.center
+        activityIndicator.startAnimating()
+        view.addSubview(activityIndicator)
     }
     @objc func addToFavourite(){
         if facouritePresenter.searchInFavourites(leagueId: (league?.league_key)!){
@@ -179,6 +189,7 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
     func renderUpComingEventsToCollectionView(fixturesData: [Fixtures]) {
         upComingEvents = fixturesData
         DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
             self.collectionView.reloadData()
         }
     }
@@ -186,6 +197,7 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
     func renderToCollectionView(fixturesData: [Fixtures]) {
         fixtures = fixturesData
         DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
             self.collectionView.reloadData()
         }
     }
@@ -193,6 +205,7 @@ class FixtureCollectionViewController: UICollectionViewController , FixtureProto
     func renderTeamsToCollectionView(teamsData: [Teams]) {
         teams = teamsData
         DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
             self.collectionView.reloadData()
         }
     }
