@@ -94,16 +94,16 @@ class SportsCollectionViewController: UICollectionViewController , UICollectionV
                     // football leagues
                 case 0:
                     vc.sport = "footBall"
-                    vc.url = "https://apiv2.allsportsapi.com/football/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+                    vc.url = "https://apiv2.allsportsapi.com/football/?met=Leagues&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1"
                 case 1:
                     vc.sport = "basketBall"
-                    vc.url = "https://apiv2.allsportsapi.com/basketball/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+                    vc.url = "https://apiv2.allsportsapi.com/basketball/?met=Leagues&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1"
                 case 2:
                     vc.sport = "cricket"
-                    vc.url = "https://apiv2.allsportsapi.com/cricket/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+                    vc.url = "https://apiv2.allsportsapi.com/cricket/?met=Leagues&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1"
                 default:
                     vc.sport = "tennis"
-                    vc.url = "https://apiv2.allsportsapi.com/tennis/?met=Leagues&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+                    vc.url = "https://apiv2.allsportsapi.com/tennis/?met=Leagues&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1"
                 }
                 self.navigationController?.pushViewController(vc, animated: true)
             }else{

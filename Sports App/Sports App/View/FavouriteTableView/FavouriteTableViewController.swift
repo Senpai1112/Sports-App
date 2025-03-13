@@ -101,8 +101,8 @@ class FavouriteTableViewController: UITableViewController ,FavouriteProtocol , R
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            let alert = UIAlertController(title: "deleting", message: "Do you want to delete \((leaguesAndUrls?[indexPath.row].league_name)!) from favourites", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "yes", style: .destructive, handler: { [self]_ in 
+            let alert = UIAlertController(title: "Deleting", message: "Do you want to delete \((leaguesAndUrls?[indexPath.row].league_name)!) from favourites", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "yes", style: .destructive, handler: { [self]_ in
                 presenter.deleteFavouriteData(leagueId: (leaguesAndUrls![indexPath.row].league_key)!)
                 leaguesAndUrls?.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)

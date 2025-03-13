@@ -12,23 +12,23 @@ import Reachability
 class LeaguesTableViewController: UITableViewController ,LeaguesProtocol{
 
     /* footBall urls */
-    var footBallFixtureURL : String = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2022-01-25&to=2023-01-25"
-    var footBallFixtureUpcomingMatches : String = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2025-01-25&to=2025-02-25"
-    var footBallTeams : String = "https://apiv2.allsportsapi.com/football/?&met=Teams&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+    var footBallFixtureURL : String = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1&from=2022-01-25&to=2023-01-25"
+    var footBallFixtureUpcomingMatches : String = "https://apiv2.allsportsapi.com/football/?met=Fixtures&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1&from=2025-01-25&to=2025-02-25"
+    var footBallTeams : String = "https://apiv2.allsportsapi.com/football/?&met=Teams&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1"
     
     /* BasketBall urls */
-    var basketBallFixtureUrl : String = "https://apiv2.allsportsapi.com/basketball/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2022-01-25&to=2023-01-25"
-    var basketBallFixtureUpComingMatches : String = "https://apiv2.allsportsapi.com/basketball/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2025-01-25&to=2025-02-25"
-    var basketBallTeams : String = "https://allsportsapi.com/api/basketball/?&met=Teams&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+    var basketBallFixtureUrl : String = "https://apiv2.allsportsapi.com/basketball/?met=Fixtures&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1&from=2022-01-25&to=2023-01-25"
+    var basketBallFixtureUpComingMatches : String = "https://apiv2.allsportsapi.com/basketball/?met=Fixtures&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1&from=2025-01-25&to=2025-02-25"
+    var basketBallTeams : String = "https://allsportsapi.com/api/basketball/?&met=Teams&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1"
     
     /* Cricket urls*/
-    var cricketFixtureUrl : String = "https://apiv2.allsportsapi.com/cricket/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2022-01-25&to=2023-01-25"
-    var cricketFixtureUpComingMatches : String = "https://apiv2.allsportsapi.com/cricket/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2025-01-25&to=2025-02-25"
-    var cricketTeams : String = "https://allsportsapi.com/api/cricket/?&met=Teams&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46"
+    var cricketFixtureUrl : String = "https://apiv2.allsportsapi.com/cricket/?met=Fixtures&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1&from=2022-01-25&to=2023-01-25"
+    var cricketFixtureUpComingMatches : String = "https://apiv2.allsportsapi.com/cricket/?met=Fixtures&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1&from=2025-01-25&to=2025-02-25"
+    var cricketTeams : String = "https://allsportsapi.com/api/cricket/?&met=Teams&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1"
     
     /* tennis urls */
-    var tennisFixtureUrl : String = "https://apiv2.allsportsapi.com/tennis/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2022-01-25&to=2023-01-25"
-    var tennisFixtureUpComingMatches : String = "https://apiv2.allsportsapi.com/tennis/?met=Fixtures&APIkey=63a132851e4cc98a59ef8fb84943ede033052613356a09a32fb125467d1d2a46&from=2025-01-25&to=2025-02-25"
+    var tennisFixtureUrl : String = "https://apiv2.allsportsapi.com/tennis/?met=Fixtures&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1&from=2022-01-25&to=2023-01-25"
+    var tennisFixtureUpComingMatches : String = "https://apiv2.allsportsapi.com/tennis/?met=Fixtures&APIkey=22728876f471b358fb3f71d0d981bf40f619171ebff77a7b6549a79a663efec1&from=2025-01-25&to=2025-02-25"
     
     
     var url : String?
